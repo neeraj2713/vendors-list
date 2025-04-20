@@ -1,14 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
 export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
+  request: NextRequest,
+  props: Props
 ) {
-  const body = await req.json();
+  const body = await request.json();
 
   const updated = await prisma.vendor.update({
-    where: { id: context.params.id },
+    where: { id: props.params.id },
     data: body
   });
 
@@ -16,9 +22,9 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _: NextRequest,
-  context: { params: { id: string } }
+  request: NextRequest,
+  props: Props
 ) {
-  await prisma.vendor.delete({ where: { id: context.params.id } });
+  await prisma.vendor.delete({ where: { id: props.params.id } });
   return NextResponse.json({ success: true });
 }
