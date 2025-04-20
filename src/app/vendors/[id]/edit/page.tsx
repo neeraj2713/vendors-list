@@ -2,8 +2,16 @@ import { prisma } from '@/app/lib/prisma';
 import { notFound } from 'next/navigation';
 import EditVendorForm from '@/app/components/EditVendorForm';
 
-export default async function EditVendorPage({ params }: { params: { id: string } }) {
-  const vendor = await prisma.vendor.findUnique({ where: { id: params.id } });
+interface Props {
+  params: {
+    id: string;
+  };
+}
+
+export default async function EditVendorPage(props: Props) {
+  const id = props.params.id;
+
+  const vendor = await prisma.vendor.findUnique({ where: { id } });
 
   if (!vendor) return notFound();
 
